@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ARCHIVE — Studio éditorial</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,400;1,9..144,500&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#241F1A;
+    --paper:#EFE7D8;
+    --paper-soft:#E7DDC9;
+    --sienna:#A8572E;
+    --olive:#6E6650;
+    --gold:#C9A672;
+    --brown:#332B23;
+    --line: rgba(36,31,26,0.16);
+    --focus: #A8572E;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --ink:#EDE6D6;
+      --paper:#1C1712;
+      --paper-soft:#231D17;
+      --sienna:#D98B5F;
+      --olive:#B7AD8D;
+      --gold:#D9B98A;
+      --brown:#0F0C09;
+      --line: rgba(237,230,214,0.14);
+    }
+  }
+  :root[data-theme="dark"]{
+    --ink:#EDE6D6;
+    --paper:#1C1712;
+    --paper-soft:#231D17;
+    --sienna:#D98B5F;
+    --olive:#B7AD8D;
+    --gold:#D9B98A;
+    --brown:#0F0C09;
+    --line: rgba(237,230,214,0.14);
+  }
+
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Instrument Sans', sans-serif;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  ::selection{ background:var(--sienna); color:var(--paper); }
+  a{ color:inherit; }
+  img{ max-width:100%; display:block; }
+
+  .wrap{
+    max-width:1180px;
+    margin:0 auto;
+    padding:0 clamp(20px, 5vw, 64px);
+  }
+
+  /* grain */
+  .grain{
+    position:fixed; inset:0; pointer-events:none; z-index:40;
+    opacity:0.05; mix-blend-mode:overlay;
+  }
+
+  /* ---------- header ---------- */
+  header{
+    position:fixed; top:0; left:0; right:0; z-index:30;
+    display:flex; align-items:center; justify-content:space-between;
+    padding: 22px clamp(20px, 5vw, 64px);
+    font-size:0.82rem;
+    letter-spacing:0.02em;
+    mix-blend-mode:difference;
+    color:#EFE7D8;
+  }
+  .logo{
+    font-family:'Fraunces', serif;
+    font-weight:500;
+    font-size:1.05rem;
+    letter-spacing:0.01em;
+  }
+  nav{ display:flex; gap:clamp(16px,3vw,34px); }
+  nav a{ text-decoration:none; opacity:0.85; transition:opacity .25s ease; }
+  nav a:hover{ opacity:1; }
+  .menu-toggle{ display:none; background:none; border:none; color:inherit; font:inherit; cursor:pointer; }
+
+  /* ---------- hero ---------- */
+  .hero{
+    position:relative;
+    min-height:100svh;
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-end;
+    padding-bottom:56px;
+    background:
+      radial-gradient(120% 90% at 15% 10%, rgba(201,166,114,0.35), transparent 60%),
+      radial-gradient(90% 70% at 85% 85%, rgba(168,87,46,0.28), transparent 55%),
+      linear-gradient(160deg, var(--brown), #1c1611 60%, var(--brown));
+    color:#EFE7D8;
+    border-bottom:1px solid var(--line);
+  }
+  .hero::before{
+    content:"";
+    position:absolute; inset:0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.35'/%3E%3C/svg%3E");
+    opacity:0.35;
+    mix-blend-mode:overlay;
+  }
+  .sprockets{
+    position:absolute; top:0; bottom:0; width:26px;
+    display:flex; flex-direction:column; justify-content:space-around;
+    padding: 18px 0;
+  }
+  .sprockets.left{ left:0; }
+  .sprockets.right{ right:0; }
+  .sprockets span{
+    width:9px; height:14px; margin:0 auto;
+    background:var(--paper); opacity:0.18; border-radius:2px;
+  }
+
+  .hero-top{
+    position:relative; z-index:2;
+    padding-top:clamp(110px, 20vh, 190px);
+    padding-left:clamp(20px, 5vw, 64px);
+    padding-right:clamp(20px, 5vw, 64px);
+  }
+  .frame-tag{
+    font-size:0.78rem;
+    letter-spacing:0.14em;
+    color:var(--gold);
+    display:flex; align-items:center; gap:10px;
+    margin-bottom:22px;
+    opacity:0;
+    animation: rise .9s ease .15s forwards;
+  }
+  .frame-tag::before{
+    content:""; width:26px; height:1px; background:var(--gold);
+  }
+  h1.hero-title{
+    font-family:'Fraunces', serif;
+    font-weight:400;
+    font-size:clamp(2.6rem, 7.4vw, 6.4rem);
+    line-height:0.98;
+    letter-spacing:-0.01em;
+    margin:0 0 28px;
+    max-width:14ch;
+    opacity:0;
+    animation: rise 1s ease .3s forwards;
+  }
+  h1.hero-title em{
+    font-style:italic; font-weight:400; color:var(--sienna);
+  }
+  .hero-sub{
+    max-width:46ch;
+    font-size:1.05rem;
+    line-height:1.6;
+    color:rgba(239,231,216,0.78);
+    opacity:0;
+    animation: rise 1s ease .5s forwards;
+  }
+  @keyframes rise{
+    from{ opacity:0; transform:translateY(18px); }
+    to{ opacity:1; transform:translateY(0); }
+  }
+
+  .hero-bottom{
+    position:relative; z-index:2;
+    margin-top:56px;
+    padding-left:clamp(20px, 5vw, 64px);
+    padding-right:clamp(20px, 5vw, 64px);
+    display:flex; justify-content:space-between; align-items:flex-end; gap:24px;
+    flex-wrap:wrap;
+    border-top:1px solid rgba(239,231,216,0.16);
+    padding-top:22px;
+  }
+  .hero-meta{ display:flex; gap:clamp(24px,5vw,56px); flex-wrap:wrap; }
+  .hero-meta div{ font-size:0.82rem; color:rgba(239,231,216,0.6); }
+  .hero-meta strong{ display:block; color:#EFE7D8; font-weight:500; font-size:0.92rem; margin-bottom:4px; }
+  .scroll-cue{
+    font-size:0.78rem; color:rgba(239,231,216,0.55);
+    display:flex; align-items:center; gap:8px;
+  }
+  .scroll-cue span{
+    width:1px; height:26px; background:rgba(239,231,216,0.4);
+    display:inline-block;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse{ 0%,100%{opacity:.3} 50%{opacity:1} }
+
+  /* ---------- section shared ---------- */
+  section{ padding:clamp(70px,12vh,140px) 0; }
+  .section-head{
+    display:flex; justify-content:space-between; align-items:flex-end;
+    gap:24px; margin-bottom:clamp(40px,6vw,72px);
+    border-bottom:1px solid var(--line);
+    padding-bottom:24px;
+    flex-wrap:wrap;
+  }
+  .eyebrow{
+    font-size:0.78rem; letter-spacing:0.06em; color:var(--sienna);
+  }
+  h2{
+    font-family:'Fraunces', serif;
+    font-weight:400;
+    font-size:clamp(1.9rem, 4vw, 2.9rem);
+    margin:10px 0 0;
+    max-width:16ch;
+    letter-spacing:-0.01em;
+  }
+  .section-note{
+    max-width:34ch; font-size:0.95rem; line-height:1.6; color:var(--olive);
+  }
+
+  /* ---------- manifesto ---------- */
+  .manifesto{ display:grid; grid-template-columns: 1.1fr 0.9fr; gap:clamp(30px,6vw,90px); align-items:start; }
+  .manifesto p{
+    font-size:clamp(1.25rem, 2.4vw, 1.6rem);
+    line-height:1.45;
+    font-family:'Fraunces', serif;
+    font-weight:300;
+    margin:0 0 22px;
+  }
+  .manifesto .aside{ font-size:0.95rem; line-height:1.7; color:var(--olive); }
+  .manifesto .aside p{ font-family:inherit; font-weight:400; font-size:inherit; margin:0 0 14px; }
+
+  /* ---------- gallery (contact sheet) ---------- */
+  .sheet{
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap:2px;
+    background:var(--ink);
+    border:1px solid var(--ink);
+  }
+  .frame{
+    position:relative;
+    aspect-ratio: 4/5;
+    overflow:hidden;
+    background:var(--brown);
+  }
+  .frame .tex{
+    position:absolute; inset:0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+    opacity:0.4; mix-blend-mode:overlay;
+  }
+  .frame::after{
+    content:""; position:absolute; inset:0;
+    transition: background .5s ease;
+  }
+  .frame:nth-child(3n+1){ background: radial-gradient(120% 100% at 20% 20%, #4a3626, #1c1611 70%); }
+  .frame:nth-child(3n+2){ background: radial-gradient(120% 100% at 80% 30%, #5c3a24, #201811 70%); }
+  .frame:nth-child(3n+3){ background: radial-gradient(120% 100% at 50% 80%, #3c2c1e, #171310 70%); }
+  .frame-label{
+    position:absolute; left:14px; bottom:14px; z-index:2;
+    font-size:0.72rem; color:rgba(239,231,216,0.75);
+    display:flex; align-items:center; gap:8px;
+  }
+  .frame-num{
+    position:absolute; right:14px; top:12px; z-index:2;
+    font-size:0.72rem; color:rgba(239,231,216,0.45); letter-spacing:0.04em;
+  }
+  .frame-placeholder-cap{
+    position:absolute; inset:0; z-index:1;
+    display:flex; align-items:center; justify-content:center;
+    text-align:center; padding:20px;
+    font-size:0.76rem; line-height:1.5; color:rgba(239,231,216,0.35);
+  }
+  .frame:hover{ transform:translateY(-2px); }
+  .frame{ transition: transform .4s ease; }
+
+  /* ---------- services ---------- */
+  .services{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:1px;
+    background:var(--line);
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+  }
+  .service{
+    background:var(--paper); padding:clamp(28px,4vw,44px) clamp(22px,3vw,34px);
+  }
+  .service h3{
+    font-family:'Fraunces', serif; font-weight:400; font-size:1.3rem; margin:0 0 12px;
+  }
+  .service p{ font-size:0.92rem; line-height:1.65; color:var(--olive); margin:0; }
+  .service .num{ font-size:0.78rem; color:var(--sienna); margin-bottom:18px; display:block; }
+
+  /* ---------- clients / marquee ---------- */
+  .marquee-wrap{ overflow:hidden; border-top:1px solid var(--line); border-bottom:1px solid var(--line); padding:26px 0; }
+  .marquee{
+    display:flex; gap:56px; white-space:nowrap;
+    font-family:'Fraunces', serif; font-style:italic; font-size:1.3rem; color:var(--olive);
+    animation: scroll 32s linear infinite;
+    width:max-content;
+  }
+  @keyframes scroll{ from{ transform:translateX(0);} to{ transform:translateX(-50%);} }
+
+  /* ---------- CTA / contact ---------- */
+  .cta{
+    background:var(--brown); color:#EFE7D8; position:relative; overflow:hidden;
+  }
+  .cta::before{
+    content:""; position:absolute; inset:0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.3'/%3E%3C/svg%3E");
+    opacity:0.25; mix-blend-mode:overlay;
+  }
+  .cta-inner{ position:relative; z-index:1; text-align:center; }
+  .cta .eyebrow{ color:var(--gold); }
+  .cta h2{ max-width:none; margin:14px auto 34px; color:#EFE7D8; }
+  .cta-form{
+    display:flex; gap:0; max-width:480px; margin:0 auto;
+    border-bottom:1px solid rgba(239,231,216,0.35);
+    padding-bottom:12px;
+  }
+  .cta-form input{
+    flex:1; background:none; border:none; color:#EFE7D8; font-family:inherit; font-size:1rem;
+    padding:8px 4px; outline:none;
+  }
+  .cta-form input::placeholder{ color:rgba(239,231,216,0.4); }
+  .cta-form button{
+    background:none; border:none; color:var(--sienna); font-family:inherit; font-size:0.95rem;
+    cursor:pointer; letter-spacing:0.02em; white-space:nowrap;
+    transition: color .25s ease;
+  }
+  .cta-form button:hover{ color:var(--gold); }
+  .cta-form input:focus-visible, .cta-form button:focus-visible{
+    outline:2px solid var(--gold); outline-offset:4px;
+  }
+  .cta-note{ margin-top:18px; font-size:0.82rem; color:rgba(239,231,216,0.5); }
+
+  /* ---------- footer ---------- */
+  footer{
+    padding:34px clamp(20px,5vw,64px);
+    display:flex; justify-content:space-between; align-items:center;
+    font-size:0.8rem; color:var(--olive); flex-wrap:wrap; gap:14px;
+    background:var(--brown); color:rgba(239,231,216,0.55);
+  }
+  footer a{ text-decoration:none; color:inherit; }
+  footer .fright{ display:flex; gap:22px; }
+
+  a:focus-visible, button:focus-visible{ outline:2px solid var(--focus); outline-offset:3px; }
+
+  @media (max-width: 860px){
+    nav{ display:none; }
+    .manifesto{ grid-template-columns:1fr; }
+    .sheet{ grid-template-columns:repeat(2,1fr); }
+    .services{ grid-template-columns:1fr; }
+    .service{ border-bottom:1px solid var(--line); }
+  }
+  @media (max-width:520px){
+    .sheet{ grid-template-columns:1fr 1fr; }
+    .cta-form{ flex-direction:column; align-items:stretch; gap:12px; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important; }
+  }
+</style>
+</head>
+<body>
+
+<svg class="grain" width="0" height="0"></svg>
+
+<header>
+  <div class="logo">ARCHIVE&nbsp;Studio</div>
+  <nav>
+    <a href="#travail">Travail</a>
+    <a href="#services">Services</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
+
+<section class="hero" id="haut">
+  <div class="sprockets left" aria-hidden="true">
+    <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+  </div>
+  <div class="sprockets right" aria-hidden="true">
+    <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+  </div>
+
+  <div class="hero-top">
+    <div class="frame-tag">Studio éditorial — mode &amp; portrait</div>
+    <h1 class="hero-title">La lumière qui reste, <em>après la prise</em></h1>
+    <p class="hero-sub">Nous fabriquons des images qui portent la matière du film argentique — grain, chaleur, imperfection — pour des maisons qui veulent une identité visuelle qu'on reconnaît sans logo.</p>
+  </div>
+
+  <div class="hero-bottom">
+    <div class="hero-meta">
+      <div><strong>Basé à</strong>Lyon &amp; Paris</div>
+      <div><strong>Discipline</strong>Mode, portrait, campagne</div>
+      <div><strong>Depuis</strong>2019</div>
+    </div>
+    <div class="scroll-cue"><span></span>Défiler</div>
+  </div>
+</section>
+
+<section id="manifeste">
+  <div class="wrap manifesto">
+    <div>
+      <p>On ne shoote pas pour remplir une grille Instagram. On construit une planche-contact : une suite d'instants qui se répondent, tournée pour raconter une matière, une saison, une silhouette.</p>
+      <p>Chaque commande démarre par une intention écrite avant la première photo — pas l'inverse.</p>
+    </div>
+    <div class="aside">
+      <p>Direction artistique, stylisme, post-production et retouche : l'ensemble de la chaîne reste entre les mêmes mains, du brief au fichier livré.</p>
+      <p>Les prises de vue se font en lumière naturelle autant que possible, sur pellicule ou en simulation fidèle du grain argentique.</p>
+    </div>
+  </div>
+</section>
+
+<section id="travail">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">Sélection</div>
+        <h2>Planche-contact — travaux récents</h2>
+      </div>
+      <div class="section-note">Neuf plans extraits de trois commandes éditoriales. Remplacer chaque cadre par un visuel définitif avant mise en ligne.</div>
+    </div>
+  </div>
+  <div class="sheet">
+    <div class="frame"><div class="tex"></div><div class="frame-placeholder-cap">Visuel à intégrer</div><span class="frame-num">F01</span><span class="frame-label">Maison Verre — SS26</span></div>
+    <div class="frame"><div class="tex"></div><div class="frame-placeholder-cap">Visuel à intégrer</div><span class="frame-num">F02</span><span class="frame-label">Maison Verre — SS26</span></div>
+    <div class="frame"><div class="tex"></div><div class="frame-placeholder-cap">Visuel à intégrer</div><span class="frame-num">F03</span><span class="frame-label">Maison Verre — SS26</span></div>
+    <div class="frame"><div class="tex"></div><div class="frame-placeholder-cap">Visuel à intégrer</div><span class="frame-num">F04</span><span class="frame-label">Étude Lumière</span></div>
+    <div class="frame"><div class="tex"></div><div class="frame-placeholder-cap">Visuel à intégrer</div><span class="frame-num">F05</span><span class="frame-label">Étude Lumière</span></div>
+    <div class="frame"><div class="tex"></div><div class="frame-placeholder-cap">Visuel à intégrer</div><span class="frame-num">F06</span><span class="frame-label">Étude Lumière</span></div>
+    <div class="frame"><div class="tex"></div><div class="frame-placeholder-cap">Visuel à intégrer</div><span class="frame-num">F07</span><span class="frame-label">Carnet de Croix-Rousse</span></div>
+    <div class="frame"><div class="tex"></div><div class="frame-placeholder-cap">Visuel à intégrer</div><span class="frame-num">F08</span><span class="frame-label">Carnet de Croix-Rousse</span></div>
+    <div class="frame"><div class="tex"></div><div class="frame-placeholder-cap">Visuel à intégrer</div><span class="frame-num">F09</span><span class="frame-label">Carnet de Croix-Rousse</span></div>
+  </div>
+</section>
+
+<section id="services">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">Prestations</div>
+        <h2>Ce qu'on livre</h2>
+      </div>
+      <div class="section-note">Trois formats, une seule exigence de constance visuelle.</div>
+    </div>
+  </div>
+  <div class="services">
+    <div class="service">
+      <span class="num">Campagne</span>
+      <h3>Direction artistique complète</h3>
+      <p>Du moodboard au fichier final : casting, stylisme, lieu, lumière, retouche. Livré prêt pour print et web.</p>
+    </div>
+    <div class="service">
+      <span class="num">Éditorial</span>
+      <h3>Séries pour magazines et lookbooks</h3>
+      <p>Une narration en 8 à 16 planches, pensée pour tenir sur une double page comme sur un flux vertical.</p>
+    </div>
+    <div class="service">
+      <span class="num">Identité</span>
+      <h3>Banque d'images de marque</h3>
+      <p>Un socle visuel cohérent — mêmes réglages, même grain, même lumière — pour toutes les prises futures.</p>
+    </div>
+  </div>
+</section>
+
+<div class="marquee-wrap">
+  <div class="wrap" style="padding:0;">
+    <div class="marquee" aria-hidden="true">
+      <span>Maison Verre</span><span>Étude Lumière</span><span>Carnet de Croix-Rousse</span><span>Nord Studio</span><span>Argile &amp; Co</span>
+      <span>Maison Verre</span><span>Étude Lumière</span><span>Carnet de Croix-Rousse</span><span>Nord Studio</span><span>Argile &amp; Co</span>
+    </div>
+  </div>
+</div>
+
+<section class="cta" id="contact">
+  <div class="wrap cta-inner">
+    <div class="eyebrow">Contact</div>
+    <h2>Une commande à confier ?</h2>
+    <form class="cta-form" onsubmit="event.preventDefault(); this.querySelector('button').textContent='Envoyé — merci';">
+      <input type="email" placeholder="votre.email@exemple.com" required aria-label="Votre email">
+      <button type="submit">Prendre contact →</button>
+    </form>
+    <p class="cta-note">Réponse sous 48h ouvrées. Basé à Lyon, disponible pour tournage partout en France.</p>
+  </div>
+</section>
+
+<footer>
+  <div>© 2026 ARCHIVE Studio</div>
+  <div class="fright">
+    <a href="#haut">Haut de page</a>
+    <a href="mailto:contact@exemple.fr">contact@exemple.fr</a>
+  </div>
+</footer>
+
+</body>
+</html>
